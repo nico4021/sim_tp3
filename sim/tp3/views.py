@@ -15,10 +15,8 @@ def tp3_view(request):
             media = formulario.cleaned_data["media"]
             desviacion = formulario.cleaned_data["desviacion"]
             contexto1 = simular_e1(cantidad_simulaciones, mostrar_desde, cuantas_mostrar, media, desviacion)
-            #contexto2 = simular_e2(cantidad_simulaciones, mostrar_desde, cuantas_mostrar, media, desviacion)
-            return render(request, 'tp3.html', {'form': formulario, "contexto1": contexto1})
-            #return render(request, 'tp3.html', {'form': formulario, "contexto1": contexto1, 'contexto2': contexto2})
-            #return render(request, 'tp3.html', {'form': formulario, 'contexto2': contexto2})
+            contexto2 = simular_e2(cantidad_simulaciones, mostrar_desde, cuantas_mostrar, media, desviacion)
+            return render(request, 'tp3.html', {'form': formulario, "contexto1": contexto1, 'contexto2': contexto2})
     else:
         formulario = Tp3Form()
         return render(request, 'tp3.html', {'form': formulario, 'error': "a"})
