@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block tittle %}TP3{% endblock %}
+{% block body_block %}
+<div class="container card shadow-sm w-100">
+    <div class="card-body justify-content-center">
+        <h5 class="card-title">Parámetros para Montecarlo</h5>
+        <hr />
+        <form class="row g-2" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="col-6">
+                {{ field.errors }}
+                <label class="form-label"> {{ field.label_tag }} </label>
+                {{ field }}
+                <div class="form-text">
+                    {{ field.help_text}}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Simular</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% if contexto1 %}
+<div class="container card shadow-sm w-100 vh-100 mt-3">
+    <div class="card-body justify-content-center w-100 h-100 overflow-auto">
+        <h5 class="card-title">Resultado Estrategia 1</h5>
+        <hr />
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Random 1</th>
+                        <th scope="col">Random 2</th>
+                        <th scope="col">Func</th>
+                        <th scope="col">Random Avería</th>
+                        <th scope="col">Día Avería</th>
+                        <th scope="col">Días Hasta Prox Avería</th>
+                        <th scope="col">Reparación</th>
+                        <th scope="col">Mantenimiento</th>
+                        <th scope="col">Total Gastos</th>
+                        <th scope="col">Promedio Gastos por día</th>
+                        <th scope="col">Total horas func. motor</th>
+                        <th scope="col">Promedio motor</th>
+                        <th scope="col">Ciclo</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for dia,values in contexto1.items %}
+
+                    <tr>
+                        <th scope="row">{{dia}}</th>
+                        {% for key, i in values.items %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if contexto2 %}
+<div class="container card shadow-sm w-100 vh-100 mt-3">
+    <div class="card-body justify-content-center w-100 h-100 overflow-auto">
+        <h5 class="card-title">Resultado Estrategia 2</h5>
+        <hr />
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Random 1</th>
+                        <th scope="col">Random 2</th>
+                        <th scope="col">Func</th>
+                        <th scope="col">Random Avería</th>
+                        <th scope="col">Día Avería</th>
+                        <th scope="col">Días Hasta Prox Avería</th>
+                        <th scope="col">Reparación</th>
+                        <th scope="col">Mantenimiento</th>
+                        <th scope="col">Total Gastos</th>
+                        <th scope="col">Promedio Gastos por día</th>
+                        <th scope="col">Total horas func. motor</th>
+                        <th scope="col">Promedio motor</th>
+                        <th scope="col">Ciclo</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for dia,values in contexto2.items %}
+
+                    <tr>
+                        <th scope="row">{{dia}}</th>
+                        {% for key, i in values.items %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
