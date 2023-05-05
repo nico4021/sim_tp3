@@ -8,5 +8,6 @@ COPY requirements.txt ./
 
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+EXPOSTE 8000
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
