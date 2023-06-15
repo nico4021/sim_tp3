@@ -4,69 +4,37 @@ def get_min_reloj(llegada_parque, estacionamiento, lista_cajas_est, lista_cajas_
     lista = [llegada_parque, estacionamiento] + lista_cajas_entradas + lista_cajas_cont + lista_cajas_est
     val = [0, None]
     for i in lista:
-        if isinstance(i, LlegadaCajaCompra):
-            if i.fin_atencion_1 == 0 and i.fin_atencion_2 == 0:
-                continue
-            else:
-                if i.fin_atencion_1 != 0 and i.fin_atencion_2 == 0:
-                    if val[0] == 0:
-                        val[0] = i.fin_atencion_1
-                        val[1] = i
-                    else:
-                        if i.fin_atencion_1 < val[0]:
-                            val[0] = i.fin_atencion_1
-                            val[1] = i
-                elif i.fin_atencion_1 == 0 and i.fin_atencion_2 != 0:
-                    if val[0] == 0:
-                        val[0] = i.fin_atencion_1
-                        val[1] = i
-                    else:
-                        if i.fin_atencion_1 < val[0]:
-                            val[0] = i.fin_atencion_1
-                            val[1] = i
-                else:
-                    if val[0] == 0:
-                        if i.fin_atencion_1 < i.fin_atencion_2:
-                            val[0] = i.fin_atencion_1
-                            val[1] = i
-                        else:
-                            val[0] = i.fin_atencion_2
-                            val[1] = i
-                    else:
-                        if i.fin_atencion_1 < val[0] and i.fin_atencion_1 < i.fin_atencion_2:
-                            val[0] = i.fin_atencion_1
-                            val[1] = i
-                        elif i.fin_atencion_2 < val[0] and i.fin_atencion_2 < i.fin_atencion_1:
-                            val[0] = i.fin_atencion_2
-                            val[1] = i
+        if val[0] == 0:
+            val[0] = i.valor_reloj
+            val[1] = i
         else:
-            if val[0] == 0:
+            if i.valor_reloj < val[0] and i.valor_reloj != 0:
+                print(True)
                 val[0] = i.valor_reloj
                 val[1] = i
-            else:
-                if i.valor_reloj < val[0] and i.valor_reloj != 0:
-                    val[0] = i.valor_reloj
-                    val[1] = i
     return val
 
 def disp_ce(lista_cajas_estacionamiento):
     for i in range(len(lista_cajas_estacionamiento)):
         if lista_cajas_estacionamiento[i].estado == "Libre":
+            print(f"Caja E disponible: {i}")
             return i
     return False
 
 def disp_caja_control(lista_cajas_control):
     for i in range(len(lista_cajas_control)):
         if lista_cajas_control[i].estado == "Libre":
+            print(f"Caja CT disponible: {i}")
             return i
     return False
 
 def mandado_a_cola(lista):
     indice = -1
     for i in range(len(lista)):
+        print(len(lista[i]), indice)
         if indice == -1:
             indice = i
-        if len(lista[i]) < indice:
+        if len(lista[i]) < len(lista[indice]):
             indice = i
     return indice
 
@@ -109,7 +77,7 @@ def tp4(desde, cantidad_mostrar, total):
     for i in range(1, 6, 1):
         lista_cajas_estacionamiento.append(LlegadaCajaEstacionamiento(id=i, estado="Libre"))
         dicc.update(lista_cajas_estacionamiento[i-1].to_dict())
-    for i in range(1, 4, 1):
+    for i in range(1, 7, 1):
         lista_cajas_entradas.append(LlegadaCajaCompra(id=i))
         dicc.update(lista_cajas_entradas[i-1].to_dict())
     for i in range(1, 5, 1):
@@ -120,7 +88,6 @@ def tp4(desde, cantidad_mostrar, total):
     for i in range(1, total+1, 1):
         cont_filas += 1
         prox_reloj = get_min_reloj(llegada_parque, estacionamiento, lista_cajas_estacionamiento, lista_cajas_control, lista_cajas_entradas)
-        print(prox_reloj)
         # LLEGADA AL PARQUE
         if isinstance(prox_reloj[1], LlegadaParque):
             print("LLEGADA PARQUEEEE \n")
@@ -128,7 +95,6 @@ def tp4(desde, cantidad_mostrar, total):
             dicc["reloj"] = prox_reloj[0]
             # Creo la proxima llegada al parque
             llegada_parque.calc_valor_reloj(dicc["reloj"])
-            print("prox", llegada_parque.valor_reloj)
             # Actualizo la llegada al parque
             dicc.update(llegada_parque.to_dict())
             # Creo el grupo que llegó
@@ -137,9 +103,7 @@ def tp4(desde, cantidad_mostrar, total):
             llegada_grupo.calc_cant_personas()
             llegada_grupo.calc_precompra()
 
-            # Calculamos el estacionamiento
             caja_est_disp = disp_ce(lista_cajas_estacionamiento)
-            print("disp caja:", caja_est_disp)
             if caja_est_disp is not False:
                 # Creo el grupo con estado Siendo Atendido Caja Estacionamiento
                 lista_grupos.append(Grupo(id=cont_grupos, estado="SACE", hora_llegada=dicc["reloj"],
@@ -172,6 +136,7 @@ def tp4(desde, cantidad_mostrar, total):
             # Calculamos tiempo estacionamiento
             estacionamiento.calc_valor_reloj(dicc["reloj"])
             estacionamiento.num_grupo = prox_reloj[1].id_grupo
+            dicc.update(estacionamiento.to_dict())
             if len(cola_caja_estacionamiento) > 0:
                 # Transicion ocupada -> ocupada
                 prox_reloj[1].estado = "Ocupada"
@@ -211,11 +176,14 @@ def tp4(desde, cantidad_mostrar, total):
                                 lista_cajas_control[indice].cola += 1
                                 dicc.update(lista_cajas_control[indice].to_dict())
                                 cola_control[indice].append(persona)
+                    else:
+                        #Ir a comprar entrara
+                        print("no tiene precompra")
 
         #elif isinstance(prox_reloj[1], LlegadaCajaCompra):
         #elif isinstance(prox_reloj[1], LlegadaCajaControl):
         if i >= desde and cont_filas <= cantidad_mostrar:
-            fin[f"{i}"] = dicc
+            fin[f"{cont_filas}"] = dicc.copy()
     for i in dicc.keys():
         llaves[i] = ""
     return fin, llaves

@@ -71,21 +71,11 @@ class LlegadaParque(Evento):
             d[f"LlegadaParque - {llave}"] = valor
         return d
 
-class LlegadaCajaCompra:
-    def __init__(self, id, cola=0, estado1="Libre", rnd_atencion_1=0, demora_atencion_1=0, fin_atencion_1=0, estado2="Libre" ,
-                 rnd_atencion_2=0, demora_atencion_2=0, fin_atencion_2=0, id_grupo1=0, id_grupo2=0):
-        self.id = id
-        self.cola = cola
-        self.estado1 = estado1
-        self.rnd_atencion_1 = rnd_atencion_1
-        self.demora_atencion_1 = demora_atencion_1
-        self.fin_atencion_1 = fin_atencion_1
-        self.id_grupo1 = id_grupo1
-        self.estado2 = estado2
-        self.rnd_atencion_2 = rnd_atencion_2
-        self.demora_atencion_2 = demora_atencion_2
-        self.fin_atencion_2 = fin_atencion_2
-        self.id_grupo2 = id_grupo2
+
+class LlegadaCajaCompra(Evento):
+    def __init__(self, estado="Libre", *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.estado = estado
 
     def to_dict(self):
         d = {}
@@ -95,25 +85,10 @@ class LlegadaCajaCompra:
             d[f"CajaEntradas{self.id} - {llave}"] = valor
         return d
 
-    def calc_valor_reloj_1(self, reloj):
-        self.rnd_atencion_1 = get_rand()
-        self.demora_atencion_1 = -1.533*log(1-self.rnd_atencion_1)
-        self.fin_atencion_1 = self.demora_atencion_1 + reloj
-
-    def calc_valor_reloj_2(self, reloj):
-        self.rnd_atencion_2 = get_rand()
-        self.demora_atencion_2 = -1.533*log(1-self.rnd_atencion_1)
-        self.fin_atencion_2 = self.demora_atencion_2 + reloj
-
-    def reset1(self):
-        self.rnd_atencion_1 = 0
-        self.demora_atencion_1 = 0
-        self.fin_atencion_1 = 0
-
-    def reset2(self):
-        self.rnd_atencion_2 = 0
-        self.demora_atencion_2 = 0
-        self.fin_atencion_2 = 0
+    def calc_valor_reloj(self, reloj):
+        self.rand = get_rand()
+        self.valor = -1.533*log(1-self.rand)
+        self.valor_reloj = self.valor + reloj
 
 class LlegadaCajaControl(Evento):
     def __init__(self, estado="Libre", cola=0, *args, **kwargs):
@@ -183,6 +158,7 @@ class LlegadaGrupo:
             self.tiene_precompra = False
         elif 0.42 <= self.rnd_precompra <= 0.999:
             self.tiene_precompra = True
+
 
 
 class Estacionamiento(Evento):
