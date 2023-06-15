@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block tittle %}TP3{% endblock %}
+{% block body_block %}
+<div class="container card shadow-sm w-100">
+    <div class="card-header text-center bg-white">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h2 class="card-title">Trabajo Práctico 4 - Colas - 4K2 - Grupo 4</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body text-center">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h3>Integrantes</h3>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <h5 class="card-title">Nicolás Boné</h5>
+            </div>
+            <div class="col-md-3">
+                <h5 class="card-title">Bruno Aresu Barella</h5>
+            </div>
+            <div class="col-md-3">
+                <h5 class="card-title">Joaquín Koncurat</h5>
+            </div>
+            <div class="col-md-3">
+                <h5 class="card-title">Lautaro Cáceres</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container card shadow-sm w-100 mt-3">
+
+    <div class="card-body justify-content-center">
+        <h5 class="card-title">Ingrese los parámetros de entrada</h5>
+        <hr />
+        <form class="row g-2" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="col-6">
+                {{ field.errors }}
+                <label class="form-label"> {{ field.label_tag }} </label>
+                {{ field }}
+                <div class="form-text">
+                    {{ field.help_text}}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Simular</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% if contexto1 %}
+<div class="container card shadow-sm w-100 vh-100 mt-3">
+    <div class="card-body justify-content-center w-100 h-100 overflow-auto">
+        <h5 class="card-title">Resultado Estrategia Preventiva</h5>
+        <hr />
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        {% for key, value in llaves.items %}
+                        <th scope="col">{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for fila, values in contexto1.items %}
+                    <tr>
+                        {% for key, i in values.items %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}
