@@ -57,21 +57,21 @@
     </div>
 </div>
 {% if contexto1 %}
-<div class="container card shadow-sm w-100 vh-100 mt-3">
-    <div class="card-body justify-content-center w-100 h-100 overflow-auto">
+<div class="container card shadow-sm w-100 mt-3">
+    <div class="card-body justify-content-center w-100 overflow-auto">
         <h5 class="card-title">Resultado Simulación Parque</h5>
         <hr />
         <div class="col-12">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
+            <div class="table-responsive" style="height: 600px">
+                <table class="table" >
+                    <thead style="position: sticky; top: 0; background-color: white;">
                     <tr>
                         {% for key, value in llaves.items %}
                         <th scope="col">{{ key }}</th>
                         {% endfor %}
                     </tr>
                     </thead>
-                    <tbody class="table-group-divider">
+                    <tbody>
                     {% for fila, values in contexto1.items %}
                     <tr>
                         {% for key, i in values.items %}
@@ -84,6 +84,38 @@
         </div>
     </div>
 </div>
-
+<div class="container card shadow-sm w-100 mt-3">
+    <div class="card-body text-center w-100 h-100 overflow-auto">
+        <h2 class="card-title">Conclusiones</h2>
+        <hr />
+        <div class="row">
+            <div class="col-12">
+                <p>El promedio de tiempo en el sistema de personas sin pase premium fue de: {{rta.promedio_tiempo_sistema}} minutos,
+                    con un total de {{rta.ac_personas}} personas sin dicho pase.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>Promedio de tiempo de estacionamiento de los autos fue de: {{ rta.promedio_tiempo_estacionamiento }} minutos.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    La cantidad máxima de autos esperando estacionar fue de: {{ rta.max_cola_estacionamiento }}, por lo que
+                    se requirieron {{rta.metros_de_carretera_total}} metros de carretera.
+                </p>
+            </div>
+            <div class="col-12">
+                <p>El tiempo promedio de atención en cajas de control alimentario no premium fue de: {{rta.promedio_tiempo_control}} minutos.</p>
+            </div>
+            <div class="col-12">
+                <p>El tiempo promedio de atención en cajas de compra de entradas: {{rta.promedio_tiempo_compra}} minutos para un total de
+                    {{rta.ac_grupos_en_caja_compra}}.</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endif %}
 {% endblock %}
