@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block tittle %}TP3{% endblock %}
+{% block body_block %}
+<div class="container card shadow-sm w-100">
+    <div class="card-header text-center bg-white">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h2 class="card-title">Trabajo Práctico 3 - Mantenimiento de Motor - 4K2 - Grupo 4</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body text-center">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h3>Integrantes</h3>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <h5 class="card-title">Nicolás Boné</h5>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-title">Bruno Aresu Barella</h5>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-title">Joaquín Koncurat</h5>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <h5 class="card-title">Analía Oaxley</h5>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-title">Lautaro Cáceres</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container card shadow-sm w-100 mt-3">
+
+    <div class="card-body justify-content-center">
+        <h5 class="card-title">Ingrese los parámetros de entrada</h5>
+        <hr />
+        <form class="row g-2" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="col-6">
+                {{ field.errors }}
+                <label class="form-label"> {{ field.label_tag }} </label>
+                {{ field }}
+                <div class="form-text">
+                    {{ field.help_text}}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Simular</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% if contexto1 %}
+<div class="container card shadow-sm w-100 vh-100 mt-3">
+    <div class="card-body justify-content-center w-100 h-100 overflow-auto">
+        <h5 class="card-title">Resultado Estrategia Reactiva</h5>
+        <hr />
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">RND1 Funcionamiento Motor</th>
+                        <th scope="col">RND2 Funcionamiento Motor</th>
+                        <th scope="col">Tiempo Funcionamiento Motor</th>
+                        <th scope="col">Máximo Tiempo Funcionamiento Motor</th>
+                        <th scope="col">RND Avería</th>
+                        <th scope="col">Día Avería</th>
+                        <th scope="col">Días Hasta Prox Avería</th>
+                        <th scope="col">Reparación</th>
+                        <th scope="col">Mantenimiento</th>
+                        <th scope="col">Total Gastos</th>
+                        <th scope="col">Promedio Gastos por día</th>
+                        <th scope="col">Total horas func. motor</th>
+                        <th scope="col">Promedio Funcionamiento Motor Diario</th>
+                        <th scope="col">Ciclo</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for dia,values in contexto1.items %}
+
+                    <tr>
+                        <th scope="row">{{dia}}</th>
+                        {% for key, i in values.items %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if contexto2 %}
+<div class="container card shadow-sm w-100 vh-100 mt-3">
+    <div class="card-body justify-content-center w-100 h-100 overflow-auto">
+        <h5 class="card-title">Resultado Estrategia Preventiva</h5>
+        <hr />
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">RND1 Funcionamiento Motor</th>
+                        <th scope="col">RND2 Funcionamiento Motor</th>
+                        <th scope="col">Tiempo Funcionamiento Motor</th>
+                        <th scope="col">Máximo Tiempo Funcionamiento Motor</th>
+                        <th scope="col">RND Avería</th>
+                        <th scope="col">Día Avería</th>
+                        <th scope="col">Días Hasta Prox Avería</th>
+                        <th scope="col">Reparación</th>
+                        <th scope="col">Mantenimiento</th>
+                        <th scope="col">Total Gastos</th>
+                        <th scope="col">Promedio Gastos por día</th>
+                        <th scope="col">Total horas func. motor</th>
+                        <th scope="col">Promedio Funcionamiento Motor Diario</th>
+                        <th scope="col">Ciclo</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for dia,values in contexto2.items %}
+
+                    <tr>
+                        <th scope="row">{{dia}}</th>
+                        {% for key, i in values.items %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container card shadow-sm w-100 mt-3">
+    <div class="card-body text-center w-100 h-100 overflow-auto">
+        <h2 class="card-title">Conclusiones</h2>
+        <hr />
+        <div class="row">
+            <div class="col-6">
+                <p>Promedio de horas del motor funcionando por día en la estrategia 1: {{contexto3.prom_func_e1}}hs</p>
+            </div>
+            <div class="col-6">
+                <p>Promedio de horas del motor funcionando por día en la estrategia 2: {{contexto3.prom_func_e2}}hs</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Promedio final de costos por día de la estrategia 1: ${{contexto3.prom_gastos_e1}}</p>
+            </div>
+            <div class="col-6">
+                <p>Promedio final de costos por día de la estrategia 2: ${{contexto3.prom_gastos_e2}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Máxima cantidad de horas de trabajo del motor en la estrategia 1: {{contexto3.max_fun_e1}}hs</p>
+            </div>
+            <div class="col-6">
+                <p>Máxima cantidad de horas de trabajo del motor en la estrategia 2: {{contexto3.max_fun_e1}}hs</p>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-12">
+                {% if contexto3.prom_gastos_e1 < contexto3.prom_gastos_e2 %}
+                <h4>En esta simulación gana la Estrategia Reactiva por menor costo</h4>
+                {% else %}
+                <h4>En esta simulación gana la Estrategia Preventiva por menor costo</h4>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
