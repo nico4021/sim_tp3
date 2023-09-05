@@ -5,6 +5,7 @@ from numpy import log
 from math import e
 from random import random
 from scipy.stats import chi2, poisson, norm
+from pathlib import Path
 
 mult = 16843009
 adi = 826366247
@@ -156,6 +157,8 @@ def generateExponenciales(cant, intervalos, var_lambda):
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
     tp2excel.save("tp2.xlsx")
+    path_to_xlsx = (Path(__file__).parent.parent / 'tp2.xlsx').resolve()
+    return path_to_xlsx
 
 def generatePoissones(cant, intervalos, var_lambda):
     workbook = xlsxwriter.Workbook("tp2.xlsx", {'constant_memory': True})
@@ -234,6 +237,8 @@ def generatePoissones(cant, intervalos, var_lambda):
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
     tp2excel.save("tp2.xlsx")
+    path_to_xlsx = (Path(__file__).parent.parent / 'tp2.xlsx').resolve()
+    return path_to_xlsx
 
 def generateNormales(cant, intervalos, media, varianza):
     workbook = xlsxwriter.Workbook("tp2.xlsx", {'constant_memory': True})
@@ -313,6 +318,8 @@ def generateNormales(cant, intervalos, media, varianza):
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
     tp2excel.save("tp2.xlsx")
+    path_to_xlsx = (Path(__file__).parent.parent / 'tp2.xlsx').resolve()
+    return path_to_xlsx
 
 def generateUniformes(cant, intervalos, valor_min, valor_max):
     workbook = xlsxwriter.Workbook("tp2.xlsx", {'constant_memory': True})
@@ -400,6 +407,9 @@ def generateUniformes(cant, intervalos, valor_min, valor_max):
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
     tp2excel.save("tp2.xlsx")
+    path_to_xlsx = (Path(__file__).parent.parent / 'tp2.xlsx').resolve()
+    return path_to_xlsx
+
 
 
 
