@@ -5,7 +5,7 @@ from django.forms import IntegerField, TextInput, Select, Form, CharField, Model
 class FormBase(Form):
     class Meta:
         abstract = True
-    cantidad = IntegerField(label='Cantidad de nùmeros a generar?', widget=TextInput(attrs={'class': 'form-control'}))
+    cantidad = IntegerField(label='Cantidad de números a generar?', widget=TextInput(attrs={'class': 'form-control'}))
     intervalos = IntegerField(label='En cuántos intervalos dividir los números?', widget=TextInput(attrs={'class': 'form-control'}))
 
 

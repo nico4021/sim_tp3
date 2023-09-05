@@ -11,12 +11,6 @@ adi = 826366247
 m = (2**32)-1
 x0 = 1357
 
-workbook = xlsxwriter.Workbook("tp3.xlsx", {'constant_memory': True})
-worksheet = workbook.add_worksheet("data")
-col_headers = ["Variable"]
-for i in range(len(col_headers)):
-    worksheet.write(0, i, col_headers[i])
-
 
 def getPositiveOrZeroInt(mensaje):
     while True:
@@ -89,13 +83,18 @@ def getVarExponencial(lamb):
 
 
 def generateExponenciales(cant, intervalos, var_lambda):
+    workbook = xlsxwriter.Workbook("tp2.xlsx", {'constant_memory': True})
+    worksheet = workbook.add_worksheet("data")
+    col_headers = ["Variable"]
+    for i in range(len(col_headers)):
+        worksheet.write(0, i, col_headers[i])
     l = var_lambda
     for i in range(1, cant+1):
         for j in range(len(col_headers)):
             num = getVarExponencial(l)
             worksheet.write(i, j, num)
     workbook.close()
-    df1 = pd.read_excel("tp3.xlsx", sheet_name="data", header=0, usecols="A")
+    df1 = pd.read_excel("tp2.xlsx", sheet_name="data", header=0, usecols="A")
     maxVal = df1["Variable"].max()
     minVal = df1["Variable"].min()
     split = maxVal - minVal
@@ -128,20 +127,17 @@ def generateExponenciales(cant, intervalos, var_lambda):
     for fila in diccionario:
         chiacumulado += ((fila["Frecuencia Observada"]-fila["Frecuencia Esperada"])**2)/fila["Frecuencia Esperada"]
     probnook = round(chi2.cdf(chiacumulado, intervalos - 1), 4)
-    writer = pd.ExcelWriter("tp3.xlsx", engine="openpyxl", mode="a")
+    writer = pd.ExcelWriter("tp2.xlsx", engine="openpyxl", mode="a")
     df2 = pd.DataFrame(diccionario)
     df2.to_excel(writer, sheet_name="estadistica")
-    writer.save()
     df4 = pd.DataFrame(columns=["Chi Calculado", "Grados de libertad", "1-P", "P"])
-    df4 = df4.append(
-        {"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
-         "P": round(1 - probnook, 4)},
-        ignore_index=True)
+    df4 = pd.concat([df4, pd.DataFrame([{"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
+                                         "P": round(1 - probnook, 4)}])], ignore_index=True)
     df4.to_excel(writer, sheet_name="Chi Cuadrado")
-    writer.save()
+    writer.close()
 
-    tp3excel = openpyxl.open("tp3.xlsx")
-    estadistica_sheet = tp3excel["estadistica"]
+    tp2excel = openpyxl.open("tp2.xlsx")
+    estadistica_sheet = tp2excel["estadistica"]
     chart = openpyxl.chart.BarChart()
     chart.type = "col"
     chart.style = 10
@@ -159,16 +155,21 @@ def generateExponenciales(cant, intervalos, var_lambda):
     chart.y_axis.delete = False
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
-    tp3excel.save("tp3.xlsx")
+    tp2excel.save("tp2.xlsx")
 
 def generatePoissones(cant, intervalos, var_lambda):
+    workbook = xlsxwriter.Workbook("tp2.xlsx", {'constant_memory': True})
+    worksheet = workbook.add_worksheet("data")
+    col_headers = ["Variable"]
+    for i in range(len(col_headers)):
+        worksheet.write(0, i, col_headers[i])
     l = var_lambda
     for i in range(1, cant+1):
         for j in range(len(col_headers)):
             num = getVarPoisson(l)
             worksheet.write(i, j, num)
     workbook.close()
-    df1 = pd.read_excel("tp3.xlsx", sheet_name="data", header=0, usecols="A")
+    df1 = pd.read_excel("tp2.xlsx", sheet_name="data", header=0, usecols="A")
     maxVal = df1["Variable"].max()
     minVal = df1["Variable"].min()
     split = maxVal - minVal
@@ -205,19 +206,16 @@ def generatePoissones(cant, intervalos, var_lambda):
     for fila in diccionario:
         chiacumulado += ((fila["Frecuencia Observada"]-fila["Frecuencia Esperada"])**2)/fila["Frecuencia Esperada"]
     probnook = round(chi2.cdf(chiacumulado, intervalos - 1), 4)
-    writer = pd.ExcelWriter("tp3.xlsx", engine="openpyxl", mode="a")
+    writer = pd.ExcelWriter("tp2.xlsx", engine="openpyxl", mode="a")
     df2 = pd.DataFrame(diccionario)
     df2.to_excel(writer, sheet_name="estadistica")
-    writer.save()
     df4 = pd.DataFrame(columns=["Chi Calculado", "Grados de libertad", "1-P", "P"])
-    df4 = df4.append(
-        {"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
-         "P": round(1 - probnook, 4)},
-        ignore_index=True)
+    df4 = pd.concat([df4, pd.DataFrame([{"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
+                                         "P": round(1 - probnook, 4)}])], ignore_index=True)
     df4.to_excel(writer, sheet_name="Chi Cuadrado")
-    writer.save()
-    tp3excel = openpyxl.open("tp3.xlsx")
-    estadistica_sheet = tp3excel["estadistica"]
+    writer.close()
+    tp2excel = openpyxl.open("tp2.xlsx")
+    estadistica_sheet = tp2excel["estadistica"]
     chart = openpyxl.chart.BarChart()
     chart.type = "col"
     chart.style = 10
@@ -235,9 +233,14 @@ def generatePoissones(cant, intervalos, var_lambda):
     chart.y_axis.delete = False
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
-    tp3excel.save("tp3.xlsx")
+    tp2excel.save("tp2.xlsx")
 
 def generateNormales(cant, intervalos, media, varianza):
+    workbook = xlsxwriter.Workbook("tp2.xlsx", {'constant_memory': True})
+    worksheet = workbook.add_worksheet("data")
+    col_headers = ["Variable"]
+    for i in range(len(col_headers)):
+        worksheet.write(0, i, col_headers[i])
     u = media
     v = varianza
     for i in range(1, cant+1):
@@ -245,7 +248,7 @@ def generateNormales(cant, intervalos, media, varianza):
             num = getVarNormal(u, v)
             worksheet.write(i, j, num)
     workbook.close()
-    df1 = pd.read_excel("tp3.xlsx", sheet_name="data", header=0, usecols="A")
+    df1 = pd.read_excel("tp2.xlsx", sheet_name="data", header=0, usecols="A")
     maxVal = df1["Variable"].max()
     minVal = df1["Variable"].min()
     split = maxVal - minVal
@@ -282,19 +285,16 @@ def generateNormales(cant, intervalos, media, varianza):
     for fila in diccionario:
         chiacumulado += ((fila["Frecuencia Observada"]-fila["Frecuencia Esperada"])**2)/fila["Frecuencia Esperada"]
     probnook = round(chi2.cdf(chiacumulado, intervalos - 1), 4)
-    writer = pd.ExcelWriter("tp3.xlsx", engine="openpyxl", mode="a")
+    writer = pd.ExcelWriter("tp2.xlsx", engine="openpyxl", mode="a")
     df2 = pd.DataFrame(diccionario)
     df2.to_excel(writer, sheet_name="estadistica")
-    writer.save()
     df4 = pd.DataFrame(columns=["Chi Calculado", "Grados de libertad", "1-P", "P"])
-    df4 = df4.append(
-        {"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
-         "P": round(1 - probnook, 4)},
-        ignore_index=True)
+    df4 = pd.concat([df4, pd.DataFrame([{"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
+                                         "P": round(1 - probnook, 4)}])], ignore_index=True)
     df4.to_excel(writer, sheet_name="Chi Cuadrado")
-    writer.save()
-    tp3excel = openpyxl.open("tp3.xlsx")
-    estadistica_sheet = tp3excel["estadistica"]
+    writer.close()
+    tp2excel = openpyxl.open("tp2.xlsx")
+    estadistica_sheet = tp2excel["estadistica"]
     chart = openpyxl.chart.BarChart()
     chart.type = "col"
     chart.style = 10
@@ -312,9 +312,14 @@ def generateNormales(cant, intervalos, media, varianza):
     chart.y_axis.delete = False
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
-    tp3excel.save("tp3.xlsx")
+    tp2excel.save("tp2.xlsx")
 
 def generateUniformes(cant, intervalos, valor_min, valor_max):
+    workbook = xlsxwriter.Workbook("tp2.xlsx", {'constant_memory': True})
+    worksheet = workbook.add_worksheet("data")
+    col_headers = ["Variable"]
+    for i in range(len(col_headers)):
+        worksheet.write(0, i, col_headers[i])
     a = valor_min
     b = valor_max
     for i in range(1, cant+1):
@@ -322,7 +327,7 @@ def generateUniformes(cant, intervalos, valor_min, valor_max):
             num = getVarUniforme(a, b)
             worksheet.write(i, j, num)
     workbook.close()
-    df1 = pd.read_excel("tp3.xlsx", sheet_name="data", header=0, usecols="A")
+    df1 = pd.read_excel("tp2.xlsx", sheet_name="data", header=0, usecols="A")
     # Busco los valores max y min de la muestra
     maxVal = df1["Variable"].max()
     minVal = df1["Variable"].min()
@@ -364,21 +369,18 @@ def generateUniformes(cant, intervalos, valor_min, valor_max):
         chiacumulado += ((fila["Frecuencia Observada"]-fila["Frecuencia Esperada"])**2)/fila["Frecuencia Esperada"]
     # Calculo alfa(lo calcula scipy)
     probnook = round(chi2.cdf(chiacumulado, intervalos - 1), 4)
-    writer = pd.ExcelWriter("tp3.xlsx", engine="openpyxl", mode="a")
+    writer = pd.ExcelWriter("tp2.xlsx", engine="openpyxl", mode="a")
     df2 = pd.DataFrame(diccionario)
     # Esto arma la hoja "estadistica" en el excel
     df2.to_excel(writer, sheet_name="estadistica")
-    writer.save()
     df4 = pd.DataFrame(columns=["Chi Calculado", "Grados de libertad", "1-P", "P"])
-    df4 = df4.append(
-        {"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
-         "P": round(1 - probnook, 4)},
-        ignore_index=True)
+    df4 = pd.concat([df4, pd.DataFrame([{"Chi Calculado": chiacumulado, "Grados de libertad": intervalos - 1, "1-P": probnook,
+                                        "P": round(1 - probnook, 4)}])], ignore_index=True)
     # Esto arma la hoja Chi Cuadrado en el excel
     df4.to_excel(writer, sheet_name="Chi Cuadrado")
-    writer.save()
-    tp3excel = openpyxl.open("tp3.xlsx")
-    estadistica_sheet = tp3excel["estadistica"]
+    writer.close()
+    tp2excel = openpyxl.open("tp2.xlsx")
+    estadistica_sheet = tp2excel["estadistica"]
     # Arranco el grafico
     chart = openpyxl.chart.BarChart()
     chart.type = "col"
@@ -397,7 +399,7 @@ def generateUniformes(cant, intervalos, valor_min, valor_max):
     chart.y_axis.delete = False
     chart.shape = 4
     estadistica_sheet.add_chart(chart, "K1")
-    tp3excel.save("tp3.xlsx")
+    tp2excel.save("tp2.xlsx")
 
 
 
