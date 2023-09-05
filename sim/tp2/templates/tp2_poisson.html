@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block tittle %}TP2{% endblock %}
+{% block body_block %}
+<div class="container card shadow-sm w-100">
+    <div class="card-header text-center bg-white">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h2 class="card-title">Trabajo Práctico 2 - Generación de números aleatorios - 4K4 - Grupo 4</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body text-center">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h3>Integrantes</h3>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <h5 class="card-title">Nicolás Boné</h5>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-title">Micaela Duva</h5>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-title">Alejandro Diaz</h5>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <h5 class="card-title">Sergio Aparicio</h5>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-title">Juan Pablo Galindez</h5>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-title">Joaquin Girón</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container card shadow-sm w-100 mt-3">
+
+    <div class="card-body justify-content-center">
+        <h3 class="card-title">Generador Poisson</h3>
+        <hr />
+        <h5 class="card-title">Ingrese los parámetros de entrada</h5>
+        <form class="row g-2" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="col-6">
+                {{ field.errors }}
+                <label class="form-label"> {{ field.label_tag }} </label>
+                {{ field }}
+                <div class="form-text">
+                    {{ field.help_text}}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Simular</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
